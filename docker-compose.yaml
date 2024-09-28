@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./services/server/Dockerfile
+    ports:
+      - "80:81"
+    restart: always
+    env_file:
+      - .env
+  nginx:
+    depends_on:
+      - server
+    build:
+      context: .
+      dockerfile: ./services/nginx/Dockerfile
+    ports:
+      - "80:80"
+    restart: always
