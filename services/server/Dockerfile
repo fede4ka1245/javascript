@@ -2,11 +2,11 @@ FROM python:3.12
 
 WORKDIR /server
 
-COPY ./services/server/requirements.txt /server/requirements.txt
+COPY ./requirements.txt /server
 
 RUN pip install --no-cache-dir --upgrade -r /server/requirements.txt
 
-COPY ./src /src
-COPY ./services/server/main.py /server/main.py
+COPY ../../src /src
+COPY ./main.py /server
 
 CMD ["fastapi", "run", "main.py", "--port", "80"]
