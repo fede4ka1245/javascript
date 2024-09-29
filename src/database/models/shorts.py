@@ -18,12 +18,23 @@ class Short(Base):
     video_file_key = Column(String, nullable=True)
     subtitles_file_key = Column(String, nullable=True)
 
+    title = Column(String, nullable=True)
+    description = Column(String, nullable=True)
+    key_words_file_key = Column(String, nullable=True)
+
+    interpretation = Column(String, nullable=True)
+
     state = Column(String, nullable=True)
 
     def as_dict(self) -> dict[str, any]:
         return {
             "id": self.id,
+            "upload_id": self.upload_id,
             "video_file_key": self.video_file_key,
             "subtitles_file_key": self.subtitles_file_key,
+            "title": self.title,
+            "description": self.description,
+            "interpretation": self.interpretation,
+            "key_words_file_key": self.key_words_file_key,
             "state": self.state
         }

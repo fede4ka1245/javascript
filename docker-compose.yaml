@@ -18,4 +18,6 @@ services:
       dockerfile: ./services/nginx/Dockerfile
     ports:
       - "80:80"
+    env_file:
+      - .env
     restart: always
