@@ -13,4 +13,17 @@ server {
 
 		rewrite /api(.*) $1 break;
 	}
+
+	location /storage {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_cookie_path ~*^/.* /;
+		proxy_pass ${S3_ENDPOINT_URL};
+
+	    rewrite /storage(.*) $1 break;
+	}
 }
