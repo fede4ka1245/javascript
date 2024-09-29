@@ -16,13 +16,9 @@ const Editor = ({ videoLayerProps, close }) => {
       return;
     }
 
-    console.log(videoLayerProps);
-
-    setTimeout(() => {
-      dispatch(setLayerProps({ src: videoLayerProps.videoProps.src }))
-      dispatch(setLayerType(layerType.video))
-      dispatch(openTab(tabs.layer));
-    }, 200);
+    dispatch(setLayerProps({ src: videoLayerProps.videoProps.src }))
+    dispatch(setLayerType(layerType.video))
+    dispatch(openTab(tabs.layer));
   }, []);
 
   return (

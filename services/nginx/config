@@ -44,4 +44,8 @@ server {
 
 		proxy_pass http://s3.timeweb.cloud;
 	}
+
+  location / {
+    proxy_pass http://frontend:3000;
+  }
 }

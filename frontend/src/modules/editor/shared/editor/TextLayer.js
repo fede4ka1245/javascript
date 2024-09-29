@@ -196,7 +196,7 @@ export default class TextLayer extends Layer {
       tempCanvas.height = height;
       const tempContext = tempCanvas.getContext('2d');
 
-      let fontSize = 90 * this.getLayerCoefs().yCoef;
+      let fontSize = 40 * this.getLayerCoefs().yCoef;
       let fontName = "Arial";
       let textAlign = 'center';
 

@@ -39,15 +39,6 @@ const VideoSetter = ({ videoSetterState, setVideoSetterState }) => {
   return (
     <>
       <Grid mb={'var(--space-md)'}>
-        <input
-          style={{ color: 'var(--text-secondary-color)' }}
-          type={'file'}
-          name="file"
-          onChange={onVideoChange}
-          accept="video/mp4,video/x-m4v,video/*"
-        />
-      </Grid>
-      <Grid mb={'var(--space-md)'}>
         <InputNumber
           min={0}
           step={5}
@@ -59,24 +50,6 @@ const VideoSetter = ({ videoSetterState, setVideoSetterState }) => {
           label={'Video timing start (ms)'}
         />
       </Grid>
-      <Grid mb={'var(--space-md)'}>
-        <InputNumber
-          min={0}
-          step={5}
-          fullWidth
-          value={videoSetterState.timingEnd}
-          onChange={setTimingEnd}
-          type={'outline'}
-          label={'Video riming end (ms)'}
-        />
-      </Grid>
-      <Typography
-        fontSize={'var(--font-size-sm)'}
-        lineHeight={'var(--font-size-sm)'}
-        color={'var(--hint-color)'}
-      >
-        Saving video and image layers is currently not supported. This layer will not be saved!
-      </Typography>
     </>
   );
 };

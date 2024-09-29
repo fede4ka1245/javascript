@@ -31,7 +31,7 @@ const Clip = ({ clip }) => {
           </Typography>
         </Grid>
       </Grid>
-      <Editor isOpen={ isOpen } src={ clip.url } />
+      <Editor isOpen={ isOpen } close={ () => setIsOpen(false) } src={ clip.url } />
     </>
   )
 }
@@ -46,7 +46,7 @@ const Clips = () => {
       url: '/mocks/1.mp4'
     },
     {
-      header: 'Cходил в военкомат',
+      header: 'Ушел поздно',
       ints: ['Обнаружено лицо', 'Громкий звук'],
       state: 'Завершено',
       url: '/mocks/2.mp4'

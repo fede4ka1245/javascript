@@ -134,25 +134,29 @@ export class Transformable {
 
     getCurrnetTransform() {
         function getCurrentRotation(el) {
-            var st = window.getComputedStyle(el, null)
-            var tm =
+            try {
+              var st = window.getComputedStyle(el, null)
+              var tm =
                 st.getPropertyValue("-webkit-transform") ||
                 st.getPropertyValue("-moz-transform") ||
                 st.getPropertyValue("-ms-transform") ||
                 st.getPropertyValue("-o-transform") ||
                 st.getPropertyValue("transform")
-            ;("none")
-            if (tm != "none") {
+              ;("none")
+              if (tm != "none") {
                 var values = tm
-                    .split("(")[1]
-                    .split(")")[0]
-                    .split(",")
+                  .split("(")[1]
+                  .split(")")[0]
+                  .split(",")
                 var angle = Math.round(
-                    Math.atan2(+values[1], +values[0]) * (180 / Math.PI)
+                  Math.atan2(+values[1], +values[0]) * (180 / Math.PI)
                 )
                 return angle < 0 ? angle + 360 : angle
+              }
+              return 0
+            } catch {
+              return 0;
             }
-            return 0
         }
         const attachToBox = this.attachTo.getBoundingClientRect()
 
@@ -208,17 +212,19 @@ export class Transformable {
         }
 
         const repositionElement = (x, y, save = true) => {
-            this.boxWrapper.style.left = x + "px"
-            this.boxWrapper.style.top = y + "px"
+            try {
+              this.boxWrapper.style.left = x + "px"
+              this.boxWrapper.style.top = y + "px"
 
-            if (this.onChange) {
+              if (this.onChange) {
                 this.onChange(this.getCurrnetTransform())
-            }
+              }
 
-            if (save) {
+              if (save) {
                 this.x = x
                 this.y = y
-            }
+              }
+            } catch {}
         }
         this.repositionElement = repositionElement.bind(this)
 

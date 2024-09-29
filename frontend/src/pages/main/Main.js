@@ -11,7 +11,16 @@ const Main = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const onChange = useCallback(() => {
+  const onChange = useCallback((e) => {
+    // setLoading(true);
+    // uploadFile(e.target.files[0])
+    //   .then((id) => {
+    //     navigate(routes.clips + '/' + id);
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
+
     setLoading(true);
     setTimeout(() => {
       navigate(routes.clips + '/' + 10);
@@ -46,17 +55,6 @@ const Main = () => {
       <FileUploader
         onChange={onChange}
       />
-      <Typography
-        fontWeight={'1000'}
-        fontSize={'25px'}
-        userSelect={'none'}
-        fontFamily={'Nunito'}
-        color={'white'}
-        mb={'var(--space-md)'}
-        mt={'var(--space-md)'}
-      >
-        Ваши загрузки
-      </Typography>
       {/*{!summaries?.length && <Typography*/}
       {/*  fontWeight={'1000'}*/}
       {/*  fontSize={'25px'}*/}

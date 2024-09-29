@@ -16,6 +16,17 @@ import {
   TextSnippetRounded,
 } from "@mui/icons-material";
 
+const retentionVideos = [
+  {
+    url: '/retentions/1.mp4',
+    text: 'Subway Surf'
+  },
+  {
+    url: '/retentions/2.mp4',
+    text: 'Need For Speed'
+  }
+]
+
 const LayerEditor = () => {
   const dispatch = useDispatch();
 
@@ -54,10 +65,34 @@ const LayerEditor = () => {
     }
   }, []);
 
+  const onVideoClick = (src) => {
+    dispatch(setLayerProps({ src }))
+    dispatch(setLayerType(layerType.video))
+    dispatch(openTab(tabs.layer));
+  }
+
   return (
     <Grid display={'flex'} flexDirection={'column'} height={'100%'} >
-      <Grid>
-
+      <Typography style={{ color: 'white', fontSize: '20px', lineHeight: '18px' }}>
+        Ретеншн ассеты
+      </Typography>
+      <Grid display={ 'flex' } mt={2} gap={ 2 }>
+        {retentionVideos.map(( clip ) => (
+          <Grid display={'flex'} flexDirection={'column'} style={{ cursor: 'pointer' }}>
+            <video
+              onClick={() => onVideoClick(clip.url)}
+              id={ clip.url }
+              style={{ width: '180px', cursor: 'pointer', height: '210px', borderRadius: '16px', background: 'var(--primary-color)' }}
+            >
+              <source
+                src={ clip.url }
+              />
+            </video>
+            <Typography style={{ color: 'white', fontSize: '11px', lineHeight: '18px' }}>
+              { clip.text }
+            </Typography>
+          </Grid>
+        ))}
       </Grid>
       <Grid display={'flex'} flexDirection={'column'} mt={'auto'}>
         <Grid pb={1}>

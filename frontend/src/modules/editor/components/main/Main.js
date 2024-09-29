@@ -30,7 +30,6 @@ const Main = ({ close }) => {
   const [loading, setLoading] = useState(false);
   const { tab } = useSelector((state) => state.main);
   const pageTabs = useMemo(() => [tabs.main, tabs.assets, tabs.layers], []);
-  const navigate = useNavigate();
 
   const onTabChange = useCallback((event, newValue) => {
     dispatch(openTab(tabs[newValue]));
@@ -48,9 +47,10 @@ const Main = ({ close }) => {
 
   const onButtonCloseClick = useCallback(async () => {
     if (await appConfirm("Закрывая редакторы вы теряете прогресс")) {
+      player.terminate();
       close();
     }
-  }, []);
+  }, [player]);
 
   const onButtonBackClick = useCallback(async () => {
     dispatch(openPrevTab());
@@ -164,15 +164,7 @@ const Main = ({ close }) => {
             <Grid flex={1} pt={1}>
               <Grid p={'var(--space-sm)'} height={'100%'} display={'flex'} flexDirection={'column'}>
                 <Grid mb={'auto'}>
-                  <Input
-                    size={'small'}
-                    type={'outline'}
-                    label={'Название клипа'}
-                    fullWidth
-                    onChange={onUpdateStickerName}
-                    value={stickerName}
-                  />
-                  <Grid mt={3}>
+                  <Grid>
                     <Grid display={'flex'} justifyContent={'space-between'} mb={1}>
                       <Typography style={{ color: 'white', fontSize: '20px', lineHeight: '18px' }}>
                         Длина видео

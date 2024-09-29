@@ -172,6 +172,12 @@ export default class Player {
     this.goTo(this.videoTiming);
   }
 
+  terminate() {
+    for (const layer of this.layers) {
+      layer.delete();
+    }
+  }
+
   addListener(func) {
     const id = Date.now();
     this.listeners[id] = func;
