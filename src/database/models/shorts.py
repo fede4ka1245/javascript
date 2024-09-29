@@ -22,6 +22,8 @@ class Short(Base):
     description = Column(String, nullable=True)
     key_words_file_key = Column(String, nullable=True)
 
+    interpretation = Column(String, nullable=True)
+
     state = Column(String, nullable=True)
 
     def as_dict(self) -> dict[str, any]:
@@ -32,6 +34,7 @@ class Short(Base):
             "subtitles_file_key": self.subtitles_file_key,
             "title": self.title,
             "description": self.description,
+            "interpretation": self.interpretation,
             "key_words_file_key": self.key_words_file_key,
             "state": self.state
         }
