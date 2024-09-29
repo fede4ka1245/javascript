@@ -11,7 +11,7 @@ from src.mq import RabbitMQClient
 
 from src.s3 import FileStorage
 
-
+# Метод для добавления путей до файлов, хранимых в S3, для любой модели, содержащей ключи
 def pathify_api_object(api_object: dict[str, any], file_storage: FileStorage):
     paths_dict = dict[str, str]()
     for api_object_property_name, api_object_property_value in api_object.items():
@@ -21,6 +21,8 @@ def pathify_api_object(api_object: dict[str, any], file_storage: FileStorage):
             paths_dict[name] = path
     return api_object | paths_dict
 
+
+# Функция инициализации API сервера
 def init_app(file_storage: FileStorage, database_session: Session, message_queue_client: RabbitMQClient = None):
     app = FastAPI()
 

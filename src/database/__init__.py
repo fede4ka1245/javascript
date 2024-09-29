@@ -26,11 +26,14 @@ def create_database_session(
 
     return make_db_session()
 
+
 def get_uploads(database_session: Session):
     return database_session.query(Upload).all()
 
+
 def get_upload(database_session: Session, upload_id: int):
     return database_session.get(Upload, upload_id)
+
 
 def create_upload(database_session: Session, source_video_file_key: str):
     upload = Upload(source_video_file_key=source_video_file_key, upload_state="uploaded")
@@ -38,8 +41,10 @@ def create_upload(database_session: Session, source_video_file_key: str):
     database_session.commit()
     return upload.id
 
+
 def get_shorts(database_session: Session, upload_id: int):
     return database_session.get(Upload, upload_id).shorts
+
 
 def create_short(database_session: Session, upload_id: int, video_file_key: str | None, subtitles_file_key: str | None, state: str | None = None):
     if state is None and subtitles_file_key is not None:
