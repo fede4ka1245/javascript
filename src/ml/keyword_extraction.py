@@ -4,6 +4,7 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 device ="cuda" if torch.cuda.is_available() else "cpu"
 
+# модель для извлечения ключевых элементов с huggingface
 model_name = "0x7194633/keyt5-large" # or 0x7194633/keyt5-base
 tokenizer = T5Tokenizer.from_pretrained(model_name, device_map=device)
 model = T5ForConditionalGeneration.from_pretrained(model_name, device_map=device)

@@ -6,6 +6,7 @@ from copy import copy
 
 WHISPER_MODEL = "medium"
 
+# модель для определния эмоции текста
 EMOTION_MODEL = "Djacon/rubert-tiny2-russian-emotion-detection"
 
 EMOTION_LABELS = {
@@ -62,6 +63,7 @@ def get_timestamps_words_array(segments: list[dict]) -> list[dict]:
     return result
 
 
+# транскрибируем текст с помощью openai-whisper, выделяем отдельно сегменты для обозначения эмоций и слова отдельно с timestamp, чтобы вставлять их титрами в видео в соответствии с таймингами
 def get_transcribed_text(path_to_file: str) -> (str, list[dict]):
     result = whisper_model.transcribe(word_timestamps=True, audio=path_to_file)
     text = result["text"]
@@ -80,6 +82,7 @@ def get_transcribed_text(path_to_file: str) -> (str, list[dict]):
     return text, segments, timestamps_words
 
 
+# алгоритм для вставки эмоджи в сегменты
 def update_segments(segments: list[dict], emoji_positions: list[int], emojies: list[str], text_def="text") -> list[dict]:
     current_pos = 0
     
@@ -103,6 +106,7 @@ def update_segments(segments: list[dict], emoji_positions: list[int], emojies: l
     return segments
 
 
+# вставляем эмоджи в текст по контексту
 def insert_emojies(
     splitted_text: list[str], context_sentences: int = 2, confidence: float = 0.7
 ) -> (str, list[int], list[str]):
