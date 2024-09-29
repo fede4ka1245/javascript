@@ -166,6 +166,8 @@ export default class Player {
   }
 
   deleteLayer(layerId) {
+    const layer = [...this.layers].find(({ id }) => id === layerId);
+    layer.delete();
     this.layers = [...this.layers].filter(({ id }) => id !== layerId);
     this.goTo(this.videoTiming);
   }

@@ -1,3 +1,11 @@
+if (!process.env.REACT_APP_SERVER_API) {
+  process.env.REACT_APP_SERVER_API = '/api';
+}
+
+if (!process.env.REACT_APP_S3_API) {
+  process.env.REACT_APP_S3_API = '/storage';
+}
+
 export const uploadFile = (file) => {
   const formdata = new FormData();
   formdata.append("file", file, file.fileName);

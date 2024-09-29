@@ -28,6 +28,10 @@ export default class Layer {
     })
   }
 
+  delete() {
+    this.transformable.boxWrapper?.destroy?.();
+  }
+
   setIsRecording(recording) {
     if (recording) {
       this.transformable.boxWrapper.style.display = 'none'
