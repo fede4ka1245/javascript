@@ -71,7 +71,7 @@ export default class Layer {
 
   _getObjectInternalTransform({ width, height, canvasWidth, canvasHeight }) {
     if (!this.position) {
-      const newWidth = canvasWidth - 50;
+      const newWidth = canvasWidth;
       const newHeight = height / width * newWidth;
 
       const {
@@ -80,7 +80,7 @@ export default class Layer {
       } = this.getCoefs();
 
       this.position = {
-        x: 25,
+        x: 0,
         y: canvasHeight / 2 - newHeight / 2,
         width: newWidth,
         height: newHeight
