@@ -174,7 +174,7 @@ def main(video_path):
         }
 
     with open('viral_video_stats.json', 'w') as f:
-        json.dump(results, f)
+        json.dump(video_stats, f)
     
     clip_paths = [f"output/generated_output_{index}.mp4" for index in result["output"]]
 
