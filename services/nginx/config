@@ -23,7 +23,9 @@ server {
 		rewrite /api(.*) $1 break;
 	}
 
-	location /storage {
+	location /storage/ {
+	    rewrite ^/storage/(.*) /$1 break;
+
         proxy_set_header Host $http_host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -36,7 +38,5 @@ server {
         add_header Access-Control-Allow-Origin *;
 
         client_max_body_size 4G;
-
-	    rewrite /storage(.*) $1 break;
 	}
 }
