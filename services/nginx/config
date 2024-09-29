@@ -34,7 +34,7 @@ server {
         proxy_buffering off;
         proxy_cookie_path ~*^/.* /;
         proxy_set_header Host s3.timeweb.cloud;
-		proxy_pass https://s3.timeweb.cloud;
+		proxy_pass http://s3.timeweb.cloud;
 
         add_header Access-Control-Allow-Origin *;
 
