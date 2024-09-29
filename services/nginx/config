@@ -6,9 +6,18 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header Upgrade $http_upgrade;
-        proxy_redirect off;
-        proxy_buffering off;
-        proxy_cookie_path ~*^/.* /;
+
+        client_max_body_size 4G;
+
+        add_header Access-Control-Allow-Origin *;
+
+        # kill cache
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control 'no-store, no-cache';
+        if_modified_since off;
+        expires off;
+        etag off;
+
 		proxy_pass http://server:81;
 
 		rewrite /api(.*) $1 break;
@@ -23,6 +32,10 @@ server {
         proxy_buffering off;
         proxy_cookie_path ~*^/.* /;
 		proxy_pass ${S3_ENDPOINT_URL};
+
+        add_header Access-Control-Allow-Origin *;
+
+        client_max_body_size 4G;
 
 	    rewrite /storage(.*) $1 break;
 	}
