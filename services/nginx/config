@@ -10,5 +10,7 @@ server {
         proxy_buffering off;
         proxy_cookie_path ~*^/.* /;
 		proxy_pass http://server:81;
+
+		rewrite /api(.*) $1 break;
 	}
 }
