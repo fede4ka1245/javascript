@@ -3,11 +3,13 @@ import torch
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+# используем модель для генерации названия текста
 model_name = "IlyaGusev/rubert_telegram_headlines"
 tokenizer = AutoTokenizer.from_pretrained(model_name, do_lower_case=False, do_basic_tokenize=False, strip_accents=False, device_map=device)
 model = EncoderDecoderModel.from_pretrained(model_name, device_map=device)
 
 
+# генерируем название, прокидывая в функцию сответствующий текст и прогоняя через энкодер-декодер
 def generate_title(text):
     input_ids = tokenizer(
         [text],
