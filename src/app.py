@@ -62,7 +62,6 @@ def init_app(file_storage: FileStorage, database_session: Session, message_queue
             database_session.rollback()  # Rollback the transaction
             raise HTTPException(status_code=500, detail="Server error")
         except Exception as e:
-            database_session.rollback()  # Rollback on other exceptions
             raise HTTPException(status_code=500, detail="Server error")
 
     # Метод для получения информации по конкретному загруженному видео
@@ -79,7 +78,6 @@ def init_app(file_storage: FileStorage, database_session: Session, message_queue
             database_session.rollback()  # Rollback the transaction
             raise HTTPException(status_code=500, detail="Server error")
         except Exception as e:
-            database_session.rollback()  # Rollback on other exceptions
             raise HTTPException(status_code=500, detail="Server error")
 
     # Метод для получения клипов от загруженного видео
@@ -92,7 +90,6 @@ def init_app(file_storage: FileStorage, database_session: Session, message_queue
             database_session.rollback()  # Rollback the transaction
             raise HTTPException(status_code=500, detail="Server error")
         except Exception as e:
-            database_session.rollback()  # Rollback on other exceptions
             raise HTTPException(status_code=500, detail="Server error")
 
     # Метод для загрузки файлов в S3
