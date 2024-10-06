@@ -30,6 +30,7 @@ body, body {
     --element-border: 1px solid var(--hint-color);
 
     --header-height: 60px;
+    --content-width: 800px;
 }
 
 .clip {

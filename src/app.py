@@ -44,21 +44,45 @@ def init_app(file_storage: FileStorage, database_session: Session, message_queue
     # Метод для получения загруженных видео
     @app.get("/uploads")
     def get_uploads():
-        return list(map(lambda object: pathify_api_object(object.as_dict(), file_storage), get_uploads_from_database(database_session)))
+        try:
+          return list(map(lambda object: pathify_api_object(object.as_dict(), file_storage), get_uploads_from_database(database_session)))
+        except SQLAlchemyError as e:
+            # Handle the error (e.g., log it, re-raise it, etc.)
+            database_session.rollback()  # Rollback the transaction
+            raise HTTPException(status_code=500, detail="Server error")
+        except Exception as e:
+            database_session.rollback()  # Rollback on other exceptions
+            raise HTTPException(status_code=500, detail="Server error")
 
     # Метод для получения информации по конкретному загруженному видео
     @app.get("/uploads/{upload_id}")
     def get_upload(upload_id: int):
-        upload = get_upload_from_database(database_session, upload_id)
-        if upload is None:
-            raise HTTPException(status_code=404, detail="Upload not found")
+        try:
+            upload = get_upload_from_database(database_session, upload_id)
+            if upload is None:
+                raise HTTPException(status_code=404, detail="Upload not found")
 
-        return pathify_api_object(upload.as_dict(), file_storage)
+            return pathify_api_object(upload.as_dict(), file_storage)
+        except SQLAlchemyError as e:
+            # Handle the error (e.g., log it, re-raise it, etc.)
+            database_session.rollback()  # Rollback the transaction
+            raise HTTPException(status_code=500, detail="Server error")
+        except Exception as e:
+            database_session.rollback()  # Rollback on other exceptions
+            raise HTTPException(status_code=500, detail="Server error")
 
     # Метод для получения клипов от загруженного видео
     @app.get("/uploads/{upload_id}/shorts")
     def get_upload_shorts(upload_id: int):
-        return list(map(lambda object: pathify_api_object(object.as_dict(), file_storage), get_shorts_from_database(database_session, upload_id)))
+        try:
+            return list(map(lambda object: pathify_api_object(object.as_dict(), file_storage), get_shorts_from_database(database_session, upload_id)))
+        except SQLAlchemyError as e:
+            # Handle the error (e.g., log it, re-raise it, etc.)
+            database_session.rollback()  # Rollback the transaction
+            raise HTTPException(status_code=500, detail="Server error")
+        except Exception as e:
+            database_session.rollback()  # Rollback on other exceptions
+            raise HTTPException(status_code=500, detail="Server error")
 
     # Метод для загрузки файлов в S3
     @app.post("/assets/upload")

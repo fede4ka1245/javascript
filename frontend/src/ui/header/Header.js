@@ -28,7 +28,7 @@ const Header = () => {
           fontFamily={'Nunito'}
           color={'white'}
         >
-          RUTUBE x Бобы: CLIPS
+          CLIPS-AI
         </Typography>
       </Grid>
     </Grid>

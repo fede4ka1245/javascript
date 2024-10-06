@@ -67,18 +67,18 @@ const Clips = () => {
   const [state, setState] = useState({});
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   getShorts(id)
-  //     .then((res) => {
-  //       console.log(res);
-  //       setClips(res);
-  //     });
-  //
-  //   getUpload(id)
-  //     .then((res) => {
-  //       setState(res);
-  //     })
-  // }, []);
+  useEffect(() => {
+    getShorts(id)
+      .then((res) => {
+        console.log(res);
+        setClips(res);
+      });
+
+    getUpload(id)
+      .then((res) => {
+        setState(res);
+      })
+  }, []);
 
   return (
     <Grid>
