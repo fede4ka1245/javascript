@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 
 from src.database import create_database_session
 from src.s3 import FileStorage
-from src.app import init_app
+from src.main import init_app
 
 from os import getenv
 
