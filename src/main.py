@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from sqlalchemy import Column, Integer, ForeignKey, String, func, DateTime, create_engine
-from sqlalchemy.orm import relationship, DeclarativeBase, sessionmaker, Session
+from sqlalchemy.orm import relationship, DeclarativeBase, sessionmaker, Session, joinedload
 from sqlalchemy.engine import URL
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi import File, UploadFile, HTTPException, FastAPI
@@ -75,7 +75,7 @@ def create_database_session(
     )
     engine = create_engine(database_url)
     make_db_session = sessionmaker(autoflush=False, bind=engine)
-    Base.metadata.create_all(bind=engine)  # Corrected typo here
+    Base.metadata.create_all(bind=engine)
 
     return make_db_session()
 
@@ -83,7 +83,7 @@ def get_uploads(database_session: Session):
     return database_session.query(Upload).all()
 
 def get_upload(database_session: Session, upload_id: int):
-    return database_session.get(Upload, upload_id)
+    return database_session.query(Upload).options(joinedload(Upload.shorts)).get(upload_id)
 
 def create_upload(database_session: Session, source_video_file_key: str):
     upload = Upload(source_video_file_key=source_video_file_key, upload_state="uploaded")
@@ -92,7 +92,10 @@ def create_upload(database_session: Session, source_video_file_key: str):
     return upload.id
 
 def get_shorts(database_session: Session, upload_id: int):
-    return database_session.get(Upload, upload_id).shorts
+    upload = database_session.get(Upload, upload_id)
+    if upload is None:
+        raise HTTPException(status_code=404, detail="Upload not found")
+    return upload.shorts
 
 def create_short(database_session: Session, upload_id: int, video_file_key: str | None, subtitles_file_key: str | None, state: str | None = None):
     if state is None and subtitles_file_key is not None:
@@ -146,9 +149,9 @@ def init_app(file_storage: FileStorage, database_session: Session, message_queue
             return list(map(lambda obj: pathify_api_object(obj.as_dict(), file_storage), uploads))
         except SQLAlchemyError as e:
             database_session.rollback()
-            raise HTTPException(status_code=500, detail="Server error")
+            raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
         except Exception as e:
-            raise HTTPException(status_code=500, detail="Server error")
+            raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
     @app.get("/uploads/{upload_id}")
     def get_upload_endpoint(upload_id: int):
@@ -159,20 +162,26 @@ def init_app(file_storage: FileStorage, database_session: Session, message_queue
             return pathify_api_object(upload.as_dict(), file_storage)
         except SQLAlchemyError as e:
             database_session.rollback()
-            raise HTTPException(status_code=500, detail="Server error")
+            raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
         except Exception as e:
-            raise HTTPException(status_code=500, detail="Server error")
+            raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
     @app.get("/uploads/{upload_id}/shorts")
     def get_upload_shorts_endpoint(upload_id: int):
         try:
+            upload = get_upload(database_session, upload_id)
+            if upload is None:
+                raise HTTPException(status_code=404, detail="Upload not found")
+
             shorts = get_shorts(database_session, upload_id)
             return list(map(lambda obj: pathify_api_object(obj.as_dict(), file_storage), shorts))
+
         except SQLAlchemyError as e:
             database_session.rollback()
-            raise HTTPException(status_code=500, detail="Server error")
+            raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
         except Exception as e:
-            raise HTTPException(status_code=500, detail="Server error")
+            raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
     @app.post("/assets/upload")
     def upload_asset(file: UploadFile = File(...)):
