@@ -1,5 +1,6 @@
 from fastapi import File, UploadFile, HTTPException, FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.database import Session,\
     create_upload, create_short, \
@@ -10,6 +11,8 @@ from src.database import Session,\
 from src.mq import RabbitMQClient
 
 from src.s3 import FileStorage
+
+from sqlalchemy.exc import SQLAlchemyError
 
 # Функция для добавления путей до файлов, хранимых в S3, для любой модели, содержащей ключи
 def pathify_api_object(api_object: dict[str, any], file_storage: FileStorage):
@@ -25,6 +28,14 @@ def pathify_api_object(api_object: dict[str, any], file_storage: FileStorage):
 # Функция инициализации API сервера
 def init_app(file_storage: FileStorage, database_session: Session, message_queue_client: RabbitMQClient = None):
     app = FastAPI()
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     # Метод для загрузки исходного видео
     @app.post("/upload")
