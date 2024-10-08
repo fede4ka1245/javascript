@@ -1,4 +1,7 @@
 /.venv
-/.idea
 node_modules
 **/__pycache__
+.idea
+.env
+venv
+.venv
