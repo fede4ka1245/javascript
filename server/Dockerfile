@@ -5,11 +5,11 @@ ENV PORT=$PORT
 
 WORKDIR /server
 
-COPY ./services/server/requirements.txt /server/requirements.txt
+COPY ./server/requirements.txt /server/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /server/requirements.txt
 
-COPY ./src /server/src
-COPY ./services/server/main.py /server/main.py
+COPY ./server/src /server/src
+COPY ./server/main.py /server/main.py
 
-CMD fastapi run main.py --port $PORT
+CMD fastapi run main.py --port $PORT --host 0.0.0.0
